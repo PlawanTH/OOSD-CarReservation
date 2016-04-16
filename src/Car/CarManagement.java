@@ -32,12 +32,7 @@ public class CarManagement extends javax.swing.JFrame {
         setLook();
         initComponents();
         setVisible(true);
-        connectDB();
-        String sql = "SELECT * FROM CAR_Car";
-        car_list = db.queryRows(sql);
         refresh();
-        
-        System.out.println(db.disconnect());
     }
     
     public void connectDB(){
@@ -244,106 +239,83 @@ public class CarManagement extends javax.swing.JFrame {
         ArrayList<HashMap> search_item;
         ArrayList<HashMap> search_car = new ArrayList<HashMap>();
         connectDB();
+        String property = "";
+        
+        // check the radio is selected
         if(available_radio.isSelected()){
-            // ReserveID, CustomerID, CarID, PickUp_Date, Return_Date, Location, Mileage, Status
-            if(!search.getText().equals("")){
-                String search_sql = "SELECT * FROM CAR_Car WHERE Status = 'Available'";
-                search_item = db.queryRows(search_sql);
-                for(HashMap item : search_item){
-                    if( search.getText().equals((String) item.get("ID")) ||
-                            search.getText().equals((String) item.get("brand")) ||
-                            search.getText().equals((String) item.get("series")) ||
-                            search.getText().equals((String) item.get("year")) ||
-                            search.getText().equals((String) item.get("color")) ||
-                            search.getText().equals((String) item.get("price_day")) ||
-                            search.getText().equals((String) item.get("seat")) ||
-                            search.getText().equals((String) item.get("mileage")) ||
-                            search.getText().equals((String) item.get("LicensePage")) ){
-                        search_car.add(item);
-                    }
-                }
-            } else {
-                String search_sql = "SELECT * FROM CAR_Car WHERE Status = 'Available'";
-                search_item = db.queryRows(search_sql);
-                for(HashMap item : search_item){
-                    search_car.add(item);
-                }
+            property = "Available";
+        } else if(reserved_radio.isSelected()){
+            property = "Reserved";
+        }
+        
+        // create a sql string
+        String search_sql = "SELECT * FROM CAR_Car";
+        // if have an input
+        if(!search.getText().equals("")){
+            if(!property.equals("")){
+                search_sql += " WHERE Status = '" + property + "'";
             }
-            showContent(search_car);
-        } else if(reserved_radio.isSelected()) {
-            if(!search.getText().equals("")){
-                String search_sql = "SELECT * FROM CAR_Car WHERE Status = 'Reserved'";
-                search_item = db.queryRows(search_sql);
-                for(HashMap item : search_item){
-                    if( search.getText().equals((String) item.get("ID")) ||
-                            search.getText().equals((String) item.get("brand")) ||
-                            search.getText().equals((String) item.get("series")) ||
-                            search.getText().equals((String) item.get("year")) ||
-                            search.getText().equals((String) item.get("color")) ||
-                            search.getText().equals((String) item.get("price_day")) ||
-                            search.getText().equals((String) item.get("seat")) ||
-                            search.getText().equals((String) item.get("mileage")) ||
-                            search.getText().equals((String) item.get("LicensePage")) ){
-                        search_car.add(item);
-                    }
-                }
-            } else {
-                String search_sql = "SELECT * FROM CAR_Car WHERE Status = 'Reserved'";
-                search_item = db.queryRows(search_sql);
-                for(HashMap item : search_item){
-                    search_car.add(item);
-                }
-            }
-            showContent(search_car);
-        } else {
-            if(!search.getText().equals("")){
-                String search_sql = "SELECT * FROM CAR_Car";
-                search_item = db.queryRows(search_sql);
-                for(HashMap item : search_item){
-                    if( search.getText().equals((String) item.get("ID")) ||
-                            search.getText().equals((String) item.get("brand")) ||
-                            search.getText().equals((String) item.get("series")) ||
-                            search.getText().equals((String) item.get("year")) ||
-                            search.getText().equals((String) item.get("color")) ||
-                            search.getText().equals((String) item.get("price_day")) ||
-                            search.getText().equals((String) item.get("seat")) ||
-                            search.getText().equals((String) item.get("mileage")) ||
-                            search.getText().equals((String) item.get("LicensePage")) ){
-                        search_car.add(item);
-                    }
-                }
-                showContent(search_car);
-            } else {
-                refresh();
+        } else { // if not have an input
+            refresh();
+            return ;
+        }
+        
+        search_item = db.queryRows(search_sql);
+        for(HashMap item : search_item){
+            if( search.getText().equals((String) item.get("ID")) ||
+                    search.getText().equals((String) item.get("brand")) ||
+                    search.getText().equals((String) item.get("series")) ||
+                    search.getText().equals((String) item.get("year")) ||
+                    search.getText().equals((String) item.get("color")) ||
+                    search.getText().equals((String) item.get("price_day")) ||
+                    search.getText().equals((String) item.get("seat")) ||
+                    search.getText().equals((String) item.get("mileage")) ||
+                    search.getText().equals((String) item.get("LicensePage")) ){
+                search_car.add(item);
             }
         }
+        
+        showContent(search_car);
+        
         System.out.println(db.disconnect());
     }//GEN-LAST:event_search_buttonActionPerformed
 
     private void car_detail_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_car_detail_buttonActionPerformed
         JTextField id = new JTextField();
+        // create jcomponent for confirm dialog
         JComponent[] enter_car = new JComponent[]{
             new JLabel("Enter Car ID", SwingConstants.CENTER),
             id
         };
         int result = JOptionPane.showConfirmDialog(null, enter_car, "Car Detail", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        
+        // find the car
         connectDB();
         String carID = id.getText();
         String sql = "SELECT ID FROM CAR_Car WHERE ID = '"+ carID +"'";
         ArrayList<HashMap> cars = db.queryRows(sql);
-        if(result == JOptionPane.OK_OPTION && cars.size()!=0){
-            new CarDetail(carID);
-        } else if(result == JOptionPane.OK_OPTION) {
-            JOptionPane.showMessageDialog(null, "Cannot found car.", "Error", JOptionPane.PLAIN_MESSAGE);
+        // if press OK
+        if(result == JOptionPane.OK_OPTION){
+            // if have a car, show car detail
+            if(cars.size()>0){
+                new CarDetail(carID);
+            } else { // else show error message
+                JOptionPane.showMessageDialog(null, "Cannot found car.", "Error", JOptionPane.PLAIN_MESSAGE);
+            }
         }
-        System.out.println(db.disconnect());
+        
+        System.out.println(db.disconnect()); 
     }//GEN-LAST:event_car_detail_buttonActionPerformed
 
     private void add_carActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_carActionPerformed
+        // create AddCar panel to show in confirm dialog
         CarAdd add_car_window = new CarAdd();
         int n = JOptionPane.showConfirmDialog(null, add_car_window, "Add New Car", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        
+        // if press OK, add the car
         if( n == JOptionPane.OK_OPTION ){
             connectDB();
+            // check not have empty fields
             if(!(add_car_window.getID().equals("") ||
                 add_car_window.getBrand().equals("") ||
                 add_car_window.getSeries().equals("") ||
@@ -353,6 +325,7 @@ public class CarManagement extends javax.swing.JFrame {
                 add_car_window.getSeat().equals("") ||
                 add_car_window.getLicense().equals("")) ){
                 
+                // create sql query string
                 String sql = "INSERT INTO CAR_Car VALUES ("
                         + "'"+ add_car_window.getID() + "',"
                         + "'"+ add_car_window.getBrand() + "',"
@@ -364,31 +337,25 @@ public class CarManagement extends javax.swing.JFrame {
                         + "0,"
                         + "'"+ add_car_window.getLicense() + "',"
                         + "'Available')";
+                // execute query
                 boolean updateSuccess = db.executeQuery(sql);
                 System.out.println(updateSuccess);
                 System.out.println(db.disconnect());
                 
             }
+            else {
+                JOptionPane.showMessageDialog(null, "Invalid or missed input. Cannot add a car.");
+            }
         }
     }//GEN-LAST:event_add_carActionPerformed
 
     private void available_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_available_radioActionPerformed
-        /*if(!available_radio.isSelected()){
-            available_radio.setSelected(true);
-        } else {
-            available_radio.setSelected(false);
-        }*/
         if(reserved_radio.isSelected()){
             reserved_radio.setSelected(false);
         }
     }//GEN-LAST:event_available_radioActionPerformed
 
     private void reserved_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reserved_radioActionPerformed
-        /*if(reserved_radio.isSelected()){
-            reserved_radio.setSelected(false);
-        } else {
-            reserved_radio.setSelected(true);
-        }*/
         if(available_radio.isSelected()){
             available_radio.setSelected(false);
         }
@@ -403,7 +370,6 @@ public class CarManagement extends javax.swing.JFrame {
     }
     
     public void showContent(ArrayList<HashMap> cars){
-        connectDB();
         model = new DefaultTableModel(col,0);
         for(HashMap car : cars){
             String car_id = (String) car.get("ID");
@@ -420,7 +386,6 @@ public class CarManagement extends javax.swing.JFrame {
             model.addRow(data);
         }
         carlist_table.setModel(model);
-        System.out.println(db.disconnect());
     }
     
     /**
