@@ -25,8 +25,18 @@ public class CarDetail extends javax.swing.JFrame {
         setTitle("Car Detail");
         setLook();
         initComponents();
-        
         this.id = id;
+        initialCarValue();
+        
+        setVisible(true);    
+    }
+    
+    public void connectDB(){
+        db = new CSDbDelegate("csprog-in.sit.kmutt.ac.th", "3306", "CSC105_G6", "csc105_2014", "csc105");
+        System.out.println(db.connect());
+    }
+    
+    private void initialCarValue(){
         connectDB();
         String sql = "SELECT * FROM CAR_Car WHERE ID = '" + id + "'";
         HashMap car = db.queryRow(sql);
@@ -38,14 +48,7 @@ public class CarDetail extends javax.swing.JFrame {
         txt_seat.setText((String)car.get("seat"));
         txt_series.setText((String)car.get("series"));
         txt_year.setText((String)car.get("year"));
-        
         System.out.println(db.disconnect());
-        setVisible(true);
-    }
-    
-    public void connectDB(){
-        db = new CSDbDelegate("csprog-in.sit.kmutt.ac.th", "3306", "CSC105_G6", "csc105_2014", "csc105");
-        System.out.println(db.connect());
     }
 
     /**
