@@ -32,7 +32,7 @@ public class CarReserveAdd extends javax.swing.JFrame {
     }
     
     public void connectDB(){
-        db = new CSDbDelegate("localhost", "3306", "csc319", "root", "");
+        db = new CSDbDelegate("csprog-in.sit.kmutt.ac.th", "3306", "CSC105_G6", "csc105_2014", "csc105");
         System.out.println(db.connect());
     }
     private int getCurrentReservedID(){
@@ -383,7 +383,7 @@ public class CarReserveAdd extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Invalid value. Please enter all value.", "Error", JOptionPane.PLAIN_MESSAGE);
             System.out.println(db.disconnect());
         } 
-       else {
+      }else {
             JOptionPane.showMessageDialog(null, "No Car, or Car is reserved.", "Error", JOptionPane.PLAIN_MESSAGE);
             System.out.println(db.disconnect());
         }
