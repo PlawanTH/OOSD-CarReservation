@@ -22,9 +22,20 @@ public class CarReserveAdd extends javax.swing.JFrame {
      * Creates new form CarReserveAdd
      */
     public CarReserveAdd() {
-        setTitle("Add Car Reserve");
+         setTitle("Add Car Reserve");
         initComponents();
         setLocationRelativeTo(null);
+                
+        reserve_id.setText(getCurrentReservedID()+"");
+        
+        setVisible(true);
+    }
+    
+    public void connectDB(){
+        db = new CSDbDelegate("localhost", "3306", "csc319", "root", "");
+        System.out.println(db.connect());
+    }
+    private int getCurrentReservedID(){
         connectDB();
         String sql = "SELECT ReserveID FROM CAR_Reserve ORDER BY ReserveID DESC LIMIT 1";
         HashMap reserveID = db.queryRow(sql);
@@ -34,19 +45,10 @@ public class CarReserveAdd extends javax.swing.JFrame {
         } catch(Exception e){
             currentID = 0;
         }
-                
-        reserve_id.setText(1+currentID+"");
-        
         System.out.println(db.disconnect());
         
-        setVisible(true);
+        return currentID+1;
     }
-    
-    public void connectDB(){
-        db = new CSDbDelegate("csprog-in.sit.kmutt.ac.th", "3306", "CSC105_G6", "csc105_2014", "csc105");
-        System.out.println(db.connect());
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -323,22 +325,22 @@ public class CarReserveAdd extends javax.swing.JFrame {
         String carID = getCarID();
         String sql = "SELECT ID FROM CAR_Car WHERE ID='"+carID+"' AND Status='Available'";
         ArrayList<HashMap> cars = db.queryRows(sql);
-        if( cars.size()!=0 &&
-                !(lastname.getText().equals("") ||
-                name.getText().equals("") ||
-                age.getText().equals("") ||
-                address.getText().equals("") ||
-                city.getText().equals("") ||
-                country.getText().equals("") ||
-                email.getText().equals("") ||
-                phonenumber.getText().equals("") ||
-                car_id.getText().equals("") ||
-                pickup_date.getText().equals("") ||
-                return_date.getText().equals("") ||
-                customer_id.getText().equals("") ||
-                location.getText().equals("") ||
-                lastname.getText().equals("")
-                ) ){
+        if(cars.size() > 0){
+             if( !(lastname.getText().equals("") ||
+                    name.getText().equals("") ||
+                    age.getText().equals("") ||
+                    address.getText().equals("") ||
+                    city.getText().equals("") ||
+                    country.getText().equals("") ||
+                    email.getText().equals("") ||
+                    phonenumber.getText().equals("") ||
+                    car_id.getText().equals("") ||
+                    pickup_date.getText().equals("") ||
+                    return_date.getText().equals("") ||
+                    customer_id.getText().equals("") ||
+                    location.getText().equals("") ||
+                    lastname.getText().equals("")
+                    ) ){
             String sql_insert = "INSERT INTO CAR_Reserve VALUES("
                     + getReserveID()
                     + ",'"
@@ -350,10 +352,14 @@ public class CarReserveAdd extends javax.swing.JFrame {
                     + 0 + "','"
                     + "Pending"
                     + "')";
+            // execute insert query
             boolean insertSuccess = db.executeQuery(sql_insert);
             System.out.println(insertSuccess);
+            
+            // find customer
             String sql_customer = "SELECT * FROM CAR_Customer WHERE ID='"+getCustomerID()+"'";
             ArrayList<HashMap> customers = db.queryRows(sql_customer);
+            
             if(customers.size()==0){
                 sql_insert = "INSERT INTO CAR_Customer VALUES('"
                         + getCustomerID() + "','"
@@ -368,6 +374,7 @@ public class CarReserveAdd extends javax.swing.JFrame {
                 insertSuccess = db.executeQuery(sql_insert);
                 System.out.println(insertSuccess);
             }
+            // update car status to RESERVED
             String sql_update = "UPDATE CAR_Car SET Status = 'Reserved' WHERE ID = '"+getCarID()+"'";
             System.out.println(db.executeQuery(sql_update));
             System.out.println(db.disconnect());
@@ -375,7 +382,8 @@ public class CarReserveAdd extends javax.swing.JFrame {
         } else if(cars.size()!=0){
             JOptionPane.showMessageDialog(null, "Invalid value. Please enter all value.", "Error", JOptionPane.PLAIN_MESSAGE);
             System.out.println(db.disconnect());
-        } else {
+        } 
+       else {
             JOptionPane.showMessageDialog(null, "No Car, or Car is reserved.", "Error", JOptionPane.PLAIN_MESSAGE);
             System.out.println(db.disconnect());
         }
