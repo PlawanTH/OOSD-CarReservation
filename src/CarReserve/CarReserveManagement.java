@@ -39,9 +39,24 @@ public class CarReserveManagement extends javax.swing.JFrame {
         setLook();
         initComponents();
         setVisible(true);
+        refresh();
+    }
+    
+    public void connectDB(){
+        db = new CSDbDelegate("csprog-in.sit.kmutt.ac.th", "3306", "CSC105_G6", "csc105_2014", "csc105");
+        System.out.println(db.connect());
+    }
+    public void initialValue(){
         connectDB();
+        // select all reservation
         String sql = "SELECT * FROM CAR_Reserve";
         reserving_list = db.queryRows(sql);
+        System.out.println(db.disconnect());
+        findLatestReservedID();
+    }
+    
+    public void findLatestReservedID(){
+        connectDB();
         String max = "SELECT ReserveID FROM CAR_Reserve ORDER BY ReserveID DESC";
         HashMap temp = db.queryRow(max);
         try {
@@ -50,12 +65,6 @@ public class CarReserveManagement extends javax.swing.JFrame {
             max_reserve = 0;
         }
         System.out.println(db.disconnect());
-        refresh();
-    }
-    
-    public void connectDB(){
-        db = new CSDbDelegate("csprog-in.sit.kmutt.ac.th", "3306", "CSC105_G6", "csc105_2014", "csc105");
-        System.out.println(db.connect());
     }
     
     /**
@@ -266,6 +275,7 @@ public class CarReserveManagement extends javax.swing.JFrame {
     
     private void update_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update_buttonActionPerformed
         JTextField id = new JTextField();
+        // create component with JTextField:id
         JComponent[] input = new JComponent[]{
             new JLabel("Enter Reserve ID", SwingConstants.CENTER),
             id
@@ -274,24 +284,22 @@ public class CarReserveManagement extends javax.swing.JFrame {
         int n = JOptionPane.showConfirmDialog(null, input, "Update Reservation", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
         
         final String id_txt = id.getText();
-        connectDB();
-        String max = "SELECT ReserveID FROM CAR_Reserve ORDER BY ReserveID DESC";
-        HashMap temp = db.queryRow(max);
-        try {
-            max_reserve = Integer.parseInt((String) temp.get("ReserveID"));
-        } catch(Exception e){
-            max_reserve = 0;
-        }
-        System.out.println(db.disconnect());
+        findLatestReservedID();
+        // if press OK
         if(n==JOptionPane.OK_OPTION){
+            // get input Reserved ID
             String id_ = id.getText();
+            // parse String to int
             try {
                 Integer.parseInt(id_);
-            } catch(Exception e) {
+            } catch(Exception e) { // if cannot parse, let id > latest reserved ID
                 id_ = ""+(max_reserve+1);
             }
+            // if ID is between 0 and latest reserved ID
             if( Integer.parseInt(id_) > 0 && Integer.parseInt(id_) <= max_reserve ){
+                // open detail
                 CarReserveDetail detail = new CarReserveDetail(Integer.parseInt(id_));
+                // when close, update status detail
                 detail.addWindowListener(new WindowAdapter(){
                     public void windowClosed(WindowEvent e){
                         connectDB();
@@ -309,12 +317,13 @@ public class CarReserveManagement extends javax.swing.JFrame {
                         refresh();
                     }
                 });
-            } else {
+            } else { // show alert if it is invalid ID
                 JOptionPane.showMessageDialog(null, new JComponent[]{new JLabel("Invalid Value or No Reserving ID.", SwingConstants.CENTER)},"Error Alert!" , JOptionPane.PLAIN_MESSAGE);
             }
         }
+                         
     }//GEN-LAST:event_update_buttonActionPerformed
-    
+
     private void status_checkboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_status_checkboxActionPerformed
         if(status_checkbox.isSelected()){
             status_combobox.setEnabled(true);
@@ -327,59 +336,43 @@ public class CarReserveManagement extends javax.swing.JFrame {
         ArrayList<HashMap> search_item;
         ArrayList<HashMap> search_reserve = new ArrayList<HashMap>();
         connectDB();
+        
+        String search_sql = "SELECT * FROM CAR_Reserve";
         if(status_checkbox.isSelected()){
-            // ReserveID, CustomerID, CarID, PickUp_Date, Return_Date, Location, Mileage, Status
-            if(!search.getText().equals("")){
-                String search_sql = "SELECT * FROM CAR_Reserve WHERE Status = '"+ status_combobox.getSelectedItem()+"'";
+            search_sql += " WHERE Status = '" + status_combobox.getSelectedItem() + "'";
+        }
+        
+        // ReserveID, CustomerID, CarID, PickUp_Date, Return_Date, Location, Mileage, Status
+        // if textfield is not empty, search value
+        if(!search.getText().equals("")){
                 
-                search_item = db.queryRows(search_sql);
-                for(HashMap item : search_item){
-                    String search_sql2 = "SELECT Name,Lastname FROM CAR_Customer WHERE ID='"+(String)item.get("CustomerID")+"'";
-                    HashMap search_name = db.queryRow(search_sql2);
-                    String customer_name = (String) search_name.get("Name");
-                    String customer_lname = (String) search_name.get("Lastname");
-                    if( search.getText().equals((String) item.get("ReserveID")) ||
-                            search.getText().equals((String) item.get("CustomerID")) ||
-                            search.getText().equals((String) item.get("CarID")) ||
-                            search.getText().equals((String) item.get("Location")) ||
-                            search.getText().equals( customer_name ) ||
-                            search.getText().equals( customer_lname ) ){
-                        search_reserve.add(item);
-                    }
-                }
-            } else {
-                String search_sql = "SELECT * FROM CAR_Reserve WHERE Status = '"+status_combobox.getSelectedItem()+"'";
-                search_item = db.queryRows(search_sql);
-                for(HashMap item : search_item){
+            search_item = db.queryRows(search_sql);
+            for(HashMap item : search_item){
+                // search for Customer Information
+                String search_sql2 = "SELECT Name,Lastname FROM CAR_Customer WHERE ID='"+(String)item.get("CustomerID")+"'";
+                HashMap search_name = db.queryRow(search_sql2);
+                String customer_name = (String) search_name.get("Name");
+                String customer_lname = (String) search_name.get("Lastname");
+                
+                if( search.getText().equals((String) item.get("ReserveID")) ||
+                        search.getText().equals((String) item.get("CustomerID")) ||
+                        search.getText().equals((String) item.get("CarID")) ||
+                        search.getText().equals((String) item.get("Location")) ||
+                        search.getText().equals( customer_name ) ||
+                        search.getText().equals( customer_lname ) ){
                     search_reserve.add(item);
                 }
             }
-            showContent(search_reserve);
-            
-        } else {
-            if(!search.getText().equals("")){
-                String search_sql = "SELECT * FROM CAR_Reserve";
-                search_item = db.queryRows(search_sql);
-                for(HashMap item : search_item){
-                    String search_sql2 = "SELECT Name,Lastname FROM CAR_Customer WHERE ID='"+(String)item.get("CustomerID")+"'";
-                    HashMap search_name = db.queryRow(search_sql2);
-                    String customer_name = (String) search_name.get("Name");
-                    String customer_lname = (String) search_name.get("Lastname");
-                    if( search.getText().equals((String) item.get("ReserveID")) ||
-                            search.getText().equals((String) item.get("CustomerID")) ||
-                            search.getText().equals((String) item.get("CarID")) ||
-                            search.getText().equals((String) item.get("Location")) ||
-                            search.getText().equals( customer_name ) ||
-                            search.getText().equals( customer_lname ) ){
-                        search_reserve.add(item);
-                    }
-                }
-                showContent(search_reserve);
-            } else {
-                refresh();
+        } else { // else search for all with status property
+            search_item = db.queryRows(search_sql);
+            for(HashMap item : search_item){
+                search_reserve.add(item);
             }
         }
+        showContent(search_reserve);
+        
         System.out.println(db.disconnect());
+       
     }//GEN-LAST:event_search_buttonActionPerformed
     
     public void refresh(){
