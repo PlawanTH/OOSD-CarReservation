@@ -235,6 +235,14 @@ public class CarReserveUpdate extends javax.swing.JFrame {
                     + ", Status = '"
                     + status.getSelectedItem()
                     + "' WHERE ReserveID = " + id;
+            // boolean updateSuccess = db.executeQuery(sql_update);
+            // if(updateSuccess)
+            // System.out.println(updateSuccess);
+            // else
+            // JOptionPane.showMessageDialog(null, "Invalid Input. Cannot Update");
+            // System.out.println(db.disconnect());
+            // new CarReserveDetail(id);
+            // dispose();
             System.out.println(db.executeQuery(sql_update));
             System.out.println(db.disconnect());
             new CarReserveDetail(id);
