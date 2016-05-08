@@ -5,10 +5,16 @@
  */
 package Model;
 
+import edu.sit.cs.db.CSDbDelegate;
+
 /**
  *
  * @author chalinyasutrat
  */
-public class DBConnector {
+public class DBConnector extends CSDbDelegate {
+    
+    public DBConnector(){
+        super("localhost", "3306", "csc319", "root", "");
+    }
     
 }
