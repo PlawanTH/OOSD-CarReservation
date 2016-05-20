@@ -42,7 +42,7 @@ public class Employee extends Person {
         ArrayList<HashMap> users = db.queryRows(sql);
         
         // if users was found (row count > 0), assign value. Otherwise, disconnect DB and return null
-        if( db.countRows(users) > 0 ){
+        if( users.size() > 0 ){
             // assign value to employee
             for(HashMap user : users){
                 username = ((String)user.get("Username"));
@@ -73,7 +73,7 @@ public class Employee extends Person {
         ArrayList<HashMap> users = db.queryRows(sql);
         
         // if users was found (row count > 0), assign value. Otherwise, disconnect DB and return null
-        if( db.countRows(users) > 0 ){
+        if( users.size() > 0 ){
             // assign value to employee
             for(HashMap user : users){
                 username = ((String)user.get("Username"));
@@ -87,8 +87,8 @@ public class Employee extends Person {
         return null;
     }
 
-    private void setPersonalData(HashMap user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setPersonalData(HashMap user) {
+        
     }
     
 }

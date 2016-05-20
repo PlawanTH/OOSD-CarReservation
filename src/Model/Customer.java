@@ -49,7 +49,7 @@ public class Customer extends Person {
         ArrayList<HashMap> users = db.queryRows(sql);
         
         // if customers was found (row count > 0), assign value. Otherwise, disconnect DB and return null
-        if( db.countRows(users) > 0 ){
+        if( users.size() > 0 ){
             for(HashMap user : users){
                 customerID = (Integer.parseInt((String)user.get("CustomerID")));
                 setPersonalData(user);

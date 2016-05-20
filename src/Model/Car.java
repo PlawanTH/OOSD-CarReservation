@@ -171,7 +171,7 @@ public class Car {
         ArrayList<HashMap> cars = db.queryRows(sql);
         
         // if users was found (row count > 0), assign value. Otherwise, disconnect DB and return null
-        if( db.countRows(cars) > 0 ){
+        if( cars.size() > 0 ){
             for(HashMap car : cars){
                 carID = (Integer.parseInt((String)car.get("CarID")));
                 licensePlate = ((String)car.get("LicensePage"));
