@@ -21,7 +21,7 @@ public class ReservationController {
     
      // view for reservation window
     CarReserveManagement reserveWindow;
-    //eMainApplicationController mainAppController;
+    //MainApplicationController mainAppController;
     // model for reservation list : ArrayList<Reservation>
     ArrayList<Reservation> reservation_list;
     
@@ -29,14 +29,16 @@ public class ReservationController {
         // run reservation window
         reserveWindow = new CarReserveManagement(this);
         reserveWindow.addWindowListener(new WindowAdapter(){
-            public void windowClosed(){
+            public void windowClosing(){
                 new MainApplicationController();
             }
         });
     }
     
     // add (run add reservation window controller) >> carry
-    
+    public void runReservationAddingWindow(){
+        new ReservationAddingController();
+    }
     // detail (run reserve detail window controller) >> edit/update + delete :: @param RID by INPUT DIALOG
     
     // search : ArrayList<Reservation>
