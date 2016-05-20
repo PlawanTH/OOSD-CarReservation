@@ -6,6 +6,7 @@
 package CarReserve;
 
 import Car.CarManagement;
+import controller.reservation.ReservationAddingController;
 import edu.sit.cs.db.CSDbDelegate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,25 +18,23 @@ import javax.swing.JOptionPane;
  */
 public class CarReserveAdd extends javax.swing.JFrame {
 
-    private CSDbDelegate db;
+    ReservationAddingController controller;
+    
     /**
      * Creates new form CarReserveAdd
      */
-    public CarReserveAdd() {
-         setTitle("Add Car Reserve");
+    
+    public CarReserveAdd(ReservationAddingController controller) {
+        setTitle("Add Car Reserve");
         initComponents();
         setLocationRelativeTo(null);
-                
-        reserve_id.setText(getCurrentReservedID()+"");
+        this.controller = controller;        
+        reserve_id.setText(controller.getCurrentReservedID()+"");
         
         setVisible(true);
     }
     
-    public void connectDB(){
-        db = new CSDbDelegate("csprog-in.sit.kmutt.ac.th", "3306", "CSC105_G6", "csc105_2014", "csc105");
-        System.out.println(db.connect());
-    }
-    private int getCurrentReservedID(){
+    /*private int getCurrentReservedID(){
         connectDB();
         String sql = "SELECT ReserveID FROM CAR_Reserve ORDER BY ReserveID DESC LIMIT 1";
         HashMap reserveID = db.queryRow(sql);
@@ -48,7 +47,8 @@ public class CarReserveAdd extends javax.swing.JFrame {
         System.out.println(db.disconnect());
         
         return currentID+1;
-    }
+    }*/
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -317,11 +317,11 @@ public class CarReserveAdd extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void car_browseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_car_browseActionPerformed
-        new CarManagement();
+        controller.runCarManagementWindow();
     }//GEN-LAST:event_car_browseActionPerformed
 
     private void okbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okbuttonActionPerformed
-        connectDB();
+        /*connectDB();
         String carID = getCarID();
         String sql = "SELECT ID FROM CAR_Car WHERE ID='"+carID+"' AND Status='Available'";
         ArrayList<HashMap> cars = db.queryRows(sql);
@@ -386,7 +386,9 @@ public class CarReserveAdd extends javax.swing.JFrame {
       }else {
             JOptionPane.showMessageDialog(null, "No Car, or Car is reserved.", "Error", JOptionPane.PLAIN_MESSAGE);
             System.out.println(db.disconnect());
-        }
+        }*/
+        
+        controller.addSubmit();
     }//GEN-LAST:event_okbuttonActionPerformed
 
     private void cancelbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelbuttonActionPerformed
@@ -420,8 +422,8 @@ public class CarReserveAdd extends javax.swing.JFrame {
     public String getAddress(){
         return address.getText();
     }
-    public int getAge(){
-        return Integer.parseInt(age.getText());
+    public String getAge(){
+        return age.getText();
     }
     public String getCity(){
         return city.getText();
