@@ -4,10 +4,12 @@
  * and open the template in the editor.
  */
 package View;
-import Car.CarAdd;
-import Car.CarDetail;
+import Model.Car;
+import Model.DBConnector;
 import controller.CarManagement.CarManagementController;
 import edu.sit.cs.db.CSDbDelegate;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JComponent;
@@ -26,7 +28,7 @@ public class CarManagement extends javax.swing.JFrame {
     CarManagementController controller;
     
     private DefaultTableModel model;
-    //private ArrayList<HashMap> car_list;
+    //private ArrayList<Car> car_list;
     String[] col = {"Car ID", "License Plate", "Brands", "Series", "Year", "Type", "Engine Size", "Gear Type", "Color", "Passenger", "Price/Day", "Status"};
     /**
      * Creates new form CarManagement
@@ -65,7 +67,7 @@ public class CarManagement extends javax.swing.JFrame {
         back = new javax.swing.JButton();
         car_detail_button = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         carlist_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -141,12 +143,11 @@ public class CarManagement extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(label_header)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                             .addComponent(search_label)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -157,17 +158,20 @@ public class CarManagement extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(reserved_radio)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(refresh))))
-                .addGap(30, 30, 30))
+                            .addComponent(refresh)
+                            .addGap(24, 24, 24))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 775, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(25, 25, 25)))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addGap(16, 16, 16)
                 .addComponent(label_header)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(refresh)
                     .addComponent(search_label)
@@ -205,7 +209,7 @@ public class CarManagement extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap()
                 .addComponent(back)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(car_detail_button)
@@ -267,7 +271,7 @@ public class CarManagement extends javax.swing.JFrame {
         System.out.println("searched car activated.");
     }
     
-    public void showContent(ArrayList<HashMap> car_list){
+    public void showContent(ArrayList<Car> car_list){
         model = new DefaultTableModel(col,0);
         ArrayList<Object[]> table_contents = controller.getTableContent(car_list);
         for(Object[] row_content : table_contents){
@@ -275,6 +279,18 @@ public class CarManagement extends javax.swing.JFrame {
         }
         carlist_table.setModel(model);
         System.out.println("make table success.");
+    }
+    
+    public String getSearchedText(){
+        return search.getText();
+    }
+    
+    public boolean isReservedCar(){
+        return reserved_radio.isSelected();
+    }
+    
+    public boolean isAvailableCar(){
+        return available_radio.isSelected();
     }
     
     /**
@@ -309,6 +325,13 @@ public class CarManagement extends javax.swing.JFrame {
             public void run() {
                 new CarManagement().setVisible(true);
             }
+        //</editor-fold>
+
+        /* Create and display the form *//*
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new CarManagement().setVisible(true);
+            }
         });*/
     }
     
@@ -329,17 +352,4 @@ public class CarManagement extends javax.swing.JFrame {
     private javax.swing.JButton search_button;
     private javax.swing.JLabel search_label;
     // End of variables declaration//GEN-END:variables
-
-    public String getSearchedText(){
-        return search.getText();
-    }
-    
-    public boolean isReservedCar(){
-        return reserved_radio.isSelected();
-    }
-    
-    public boolean isAvailableCar(){
-        return available_radio.isSelected();
-    }
-    
 }

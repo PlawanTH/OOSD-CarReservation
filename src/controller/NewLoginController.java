@@ -13,7 +13,7 @@ import csc319_carreservation.Login;
  * @author chalinyasutrat
  */
 public class NewLoginController {
-
+    
     // depends on Login Windows
     private Login login;
     private Employee employee;
@@ -41,15 +41,5 @@ public class NewLoginController {
             // reset value
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 }

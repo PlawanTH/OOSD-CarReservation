@@ -24,10 +24,10 @@ import javax.swing.SwingConstants;
  * @author chalinyasutrat
  */
 public class ReservationController {
-    
-     // view for reservation window
+
+    // view for reservation window
     ReservationManagement reserveWindow;
-    //MainApplicationController mainAppController;
+    // MainApplicationController mainAppController;
     // model for reservation list : ArrayList<Reservation>
     ArrayList<Reservation> reservation_list;
     
@@ -35,6 +35,7 @@ public class ReservationController {
     ReservationAddingController reservationAddingController = null;
     ReservationDetailController reservationDetailController = null;
     
+    //int max_reserve;
     
     public ReservationController(){
         // run reservation window
@@ -75,6 +76,8 @@ public class ReservationController {
 
             String id_txt = txtID.getText();
 
+            // findLatestReservedID();
+
             // if press OK
             if(n==JOptionPane.OK_OPTION){
                 Reservation reservation = null;
@@ -98,11 +101,13 @@ public class ReservationController {
     
     // search : ArrayList<Reservation>
     public ArrayList<Reservation> getSearchedReservationList(){
+        //ArrayList<HashMap> search_reserve = new ArrayList<HashMap>();
         reservation_list = new ArrayList<Reservation>();
         
         DBConnector db = new DBConnector();
         System.out.println(db.connect());
         
+        //String search_sql = "SELECT * FROM CAR_Reserve";
         String search_sql = "SELECT * FROM oosd_g3_car_reservation, oosd_g3_car_customer"
                 + " WHERE oosd_g3_car_reservation.CustomerID = oosd_g3_car_customer.CustomerID";
         search_sql += " AND (oosd_g3_car_reservation.CustomerID LIKE '%"+reserveWindow.getSearchedText()+"%'";
@@ -110,9 +115,11 @@ public class ReservationController {
         search_sql += " OR Lastname LIKE '%"+reserveWindow.getSearchedText()+"%'";
         search_sql += " OR CarID LIKE '%"+reserveWindow.getSearchedText()+"%')";
         if(reserveWindow.isSelectedStatusCheckbox()){
-            search_sql += " AND Status = '" + reserveWindow.isSelectedStatusCheckbox() + "'";
+            search_sql += " AND Status = '" + reserveWindow.getSelectedStatus()+ "'";
         }
         
+       
+        // ReserveID, CustomerID, CarID, PickUp_Date, Return_Date, Location, Mileage, Status
         ArrayList<HashMap> search_item;
         search_item = db.queryRows(search_sql);
         for(HashMap item : search_item){
@@ -178,7 +185,5 @@ public class ReservationController {
         reserveWindow = null;
         System.out.println("go to main application.");
     }
-    
-    
     
 }
