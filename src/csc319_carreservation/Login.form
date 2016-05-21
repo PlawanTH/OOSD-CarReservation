@@ -30,17 +30,17 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="label_password" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="password" max="32767" attributes="0"/>
+                      <Component id="txt_password" max="32767" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Group type="102" alignment="2" attributes="0">
                           <Component id="label_username" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="17" pref="17" max="17" attributes="0"/>
-                          <Component id="username" min="-2" pref="119" max="-2" attributes="0"/>
+                          <Component id="txt_username" min="-2" pref="119" max="-2" attributes="0"/>
                       </Group>
                       <Component id="label1" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="label_header" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="submit" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_login" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="109" max="-2" attributes="0"/>
@@ -57,15 +57,15 @@
               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="label_username" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="username" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_username" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="label_password" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="password" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_password" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-              <Component id="submit" min="-2" max="-2" attributes="0"/>
+              <Component id="btn_login" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="53" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -98,18 +98,18 @@
         <Property name="text" type="java.lang.String" value="Password :"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="username">
+    <Component class="javax.swing.JTextField" name="txt_username">
     </Component>
-    <Component class="javax.swing.JButton" name="submit">
+    <Component class="javax.swing.JButton" name="btn_login">
       <Properties>
         <Property name="text" type="java.lang.String" value="Login"/>
         <Property name="horizontalTextPosition" type="int" value="0"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="submitActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_loginActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JPasswordField" name="password">
+    <Component class="javax.swing.JPasswordField" name="txt_password">
     </Component>
   </SubComponents>
 </Form>

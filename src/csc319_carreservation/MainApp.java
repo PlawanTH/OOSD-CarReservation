@@ -6,7 +6,9 @@
 package csc319_carreservation;
 
 import CarReserve.CarReserveManagement;
-import Car.CarManagement;
+import View.CarManagement;
+import controller.MainApplicationController;
+import controller.NewLoginController;
 import edu.sit.cs.db.CSDbDelegate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,25 +25,18 @@ import javax.swing.JOptionPane;
  */
 public class MainApp extends javax.swing.JFrame {
     
-    private CSDbDelegate db;
-    private String username;
-    private String password;
+    MainApplicationController mainAppCtrl;
+    
     /**
      * Creates new form MainApp
      */
-    public MainApp(String user, String pass) {
-        username = user;
-        password = pass;
+    public MainApp(MainApplicationController mainAppCtrl) {
+        this.mainAppCtrl = mainAppCtrl;
+        
         setTitle("Car Reserving System");
         setLook();
         initComponents();
         setVisible(true);
-        connectDB();
-    }
-    
-    public void connectDB(){
-        db = new CSDbDelegate("csprog-in.sit.kmutt.ac.th", "3306", "CSC105_G6", "csc105_2014", "csc105");
-        System.out.println(db.connect());
     }
 
     /**
@@ -54,7 +49,7 @@ public class MainApp extends javax.swing.JFrame {
     private void initComponents() {
 
         label_header = new javax.swing.JLabel();
-        car_reserve_button = new javax.swing.JButton();
+        btn_reservation_system = new javax.swing.JButton();
         car_button = new javax.swing.JButton();
         add_servicer = new javax.swing.JButton();
         logout = new javax.swing.JButton();
@@ -63,11 +58,11 @@ public class MainApp extends javax.swing.JFrame {
 
         label_header.setText("Car Reservation System");
 
-        car_reserve_button.setText("Car Reserve Management");
-        car_reserve_button.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        car_reserve_button.addActionListener(new java.awt.event.ActionListener() {
+        btn_reservation_system.setText("Car Reserve Management");
+        btn_reservation_system.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_reservation_system.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                car_reserve_buttonActionPerformed(evt);
+                btn_reservation_systemActionPerformed(evt);
             }
         });
 
@@ -112,7 +107,7 @@ public class MainApp extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(25, 25, 25)
                                         .addComponent(car_button))
-                                    .addComponent(car_reserve_button)))
+                                    .addComponent(btn_reservation_system)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(141, 141, 141)
                                 .addComponent(label_header)))
@@ -125,7 +120,7 @@ public class MainApp extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addComponent(label_header)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addComponent(car_reserve_button, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_reservation_system, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(car_button, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
@@ -139,85 +134,21 @@ public class MainApp extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void car_reserve_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_car_reserve_buttonActionPerformed
-        CarReserveManagement car_reserve_manage = new CarReserveManagement();
-        setVisible(false);
-        car_reserve_manage.addWindowListener(new WindowListener() {
-
-            @Override
-            public void windowOpened(WindowEvent e) {
-            }
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-                setVisible(true);
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-            }
-        });
-    }//GEN-LAST:event_car_reserve_buttonActionPerformed
+    private void btn_reservation_systemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reservation_systemActionPerformed
+        mainAppCtrl.runReservationWindow();
+    }//GEN-LAST:event_btn_reservation_systemActionPerformed
 
     private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
-        new Login();
-        setVisible(false);
+        new NewLoginController();
+        dispose();
     }//GEN-LAST:event_logoutActionPerformed
 
     private void car_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_car_buttonActionPerformed
-        CarManagement car_manage = new CarManagement();
-        setVisible(false);
-        car_manage.addWindowListener(new WindowListener() {
-
-            @Override
-            public void windowOpened(WindowEvent e) {
-            }
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-                setVisible(true);
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-            }
-        });
+        mainAppCtrl.runCarManagementWindow();
     }//GEN-LAST:event_car_buttonActionPerformed
 
     private void add_servicerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_servicerActionPerformed
-        ClerkAddPanel addServicer = new ClerkAddPanel();
+        /*ClerkAddPanel addServicer = new ClerkAddPanel();
         int value = JOptionPane.showConfirmDialog(null, addServicer, "Add Servicer", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if(value == JOptionPane.OK_OPTION){
             if( !(addServicer.getEmail().equals("") ||
@@ -240,19 +171,15 @@ public class MainApp extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Invalid value!", "Error", JOptionPane.PLAIN_MESSAGE);
             }
-        }
+        }*/
     }//GEN-LAST:event_add_servicerActionPerformed
 
     
     /**
      * @param args the command line arguments
      */
-   public void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+   /*public void main(String args[]) {
+       
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -269,15 +196,13 @@ public class MainApp extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MainApp("PlawanTH", "plawanth").setVisible(true);
             }
         });
-    }
+    }*/
     
     public void setLook(){
         try {
@@ -300,8 +225,8 @@ public class MainApp extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_servicer;
+    private javax.swing.JButton btn_reservation_system;
     private javax.swing.JButton car_button;
-    private javax.swing.JButton car_reserve_button;
     private javax.swing.JLabel label_header;
     private javax.swing.JButton logout;
     // End of variables declaration//GEN-END:variables

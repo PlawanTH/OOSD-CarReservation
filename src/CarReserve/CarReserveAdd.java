@@ -5,7 +5,7 @@
  */
 package CarReserve;
 
-import Car.CarManagement;
+import View.CarManagement;
 import controller.reservation.ReservationAddingController;
 import edu.sit.cs.db.CSDbDelegate;
 import java.util.ArrayList;

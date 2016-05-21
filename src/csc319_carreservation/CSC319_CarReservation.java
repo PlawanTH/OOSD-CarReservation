@@ -5,6 +5,8 @@
  */
 package csc319_carreservation;
 
+import controller.NewLoginController;
+
 /**
  *
  * @author T.Chan
@@ -16,7 +18,7 @@ public class CSC319_CarReservation {
      */
     public static void main(String[] args) {
         //create log in window
-        new Login();
+        new NewLoginController();
     }
     
 }

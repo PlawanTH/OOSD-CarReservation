@@ -5,7 +5,7 @@
  */
 package csc319_carreservation;
 
-import Car.CarManagement;
+import View.CarManagement;
 import edu.sit.cs.db.CSDbDelegate;
 import java.util.ArrayList;
 import java.util.HashMap;

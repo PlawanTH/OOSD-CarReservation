@@ -4,7 +4,7 @@
 * and open the template in the editor.
 */
 package CarReserve;
-import Car.CarManagement;
+import View.CarManagement;
 import edu.sit.cs.db.CSDbDelegate;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

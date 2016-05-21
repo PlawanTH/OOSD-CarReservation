@@ -40,7 +40,7 @@
                                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                                       <Component id="car_button" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="car_reserve_button" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btn_reservation_system" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -61,7 +61,7 @@
               <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
               <Component id="label_header" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="54" max="32767" attributes="0"/>
-              <Component id="car_reserve_button" min="-2" pref="50" max="-2" attributes="0"/>
+              <Component id="btn_reservation_system" min="-2" pref="50" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="car_button" min="-2" pref="51" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
@@ -80,13 +80,13 @@
         <Property name="text" type="java.lang.String" value="Car Reservation System"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="car_reserve_button">
+    <Component class="javax.swing.JButton" name="btn_reservation_system">
       <Properties>
         <Property name="text" type="java.lang.String" value="Car Reserve Management"/>
         <Property name="horizontalTextPosition" type="int" value="0"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="car_reserve_buttonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_reservation_systemActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="car_button">

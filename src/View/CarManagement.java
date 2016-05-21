@@ -3,7 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Car;
+package View;
+import Car.CarAdd;
+import Car.CarDetail;
+import controller.CarManagement.CarManagementController;
 import edu.sit.cs.db.CSDbDelegate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,24 +23,23 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CarManagement extends javax.swing.JFrame {
 
-    CSDbDelegate db;
+    CarManagementController controller;
+    
     private DefaultTableModel model;
-    private ArrayList<HashMap> car_list;
-    String[] col = {"Car ID", "Brands", "Series", "Year" , "Color", "License Page", "Price/Day", "Seat", "Mileage", "Status"};
+    //private ArrayList<HashMap> car_list;
+    String[] col = {"Car ID", "License Plate", "Brands", "Series", "Year", "Type", "Engine Size", "Gear Type", "Color", "Passenger", "Price/Day", "Status"};
     /**
      * Creates new form CarManagement
      */
-    public CarManagement() {
+    public CarManagement(CarManagementController controller) {
         setTitle("Car Management");
         setLook();
         initComponents();
+        
+        this.controller = controller;
+        
         setVisible(true);
         refresh();
-    }
-    
-    public void connectDB(){
-        db = new CSDbDelegate("csprog-in.sit.kmutt.ac.th", "3306", "CSC105_G6", "csc105_2014", "csc105");
-        System.out.println(db.connect());
     }
 
     /**
@@ -232,121 +234,20 @@ public class CarManagement extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        dispose();
+        controller.goToMainApplication();
     }//GEN-LAST:event_backActionPerformed
 
     private void search_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_buttonActionPerformed
-        ArrayList<HashMap> search_item;
-        ArrayList<HashMap> search_car = new ArrayList<HashMap>();
-        connectDB();
-        String property = "";
-        
-        // check the radio is selected
-        if(available_radio.isSelected()){
-            property = "Available";
-        } else if(reserved_radio.isSelected()){
-            property = "Reserved";
-        }
-        
-        // create a sql string
-        String search_sql = "SELECT * FROM CAR_Car";
-        // if have an input
-        if(!search.getText().equals("")){
-            if(!property.equals("")){
-                search_sql += " WHERE Status = '" + property + "'";
-            }
-        } else { // if not have an input
-            refresh();
-            return ;
-        }
-        
-        search_item = db.queryRows(search_sql);
-        for(HashMap item : search_item){
-            if( search.getText().equals((String) item.get("ID")) ||
-                    search.getText().equals((String) item.get("brand")) ||
-                    search.getText().equals((String) item.get("series")) ||
-                    search.getText().equals((String) item.get("year")) ||
-                    search.getText().equals((String) item.get("color")) ||
-                    search.getText().equals((String) item.get("price_day")) ||
-                    search.getText().equals((String) item.get("seat")) ||
-                    search.getText().equals((String) item.get("mileage")) ||
-                    search.getText().equals((String) item.get("LicensePage")) ){
-                search_car.add(item);
-            }
-        }
-        
-        showContent(search_car);
-        
-        System.out.println(db.disconnect());
+        showContent(controller.getSearchedCarList());
+        System.out.println("searched car activated.");
     }//GEN-LAST:event_search_buttonActionPerformed
 
     private void car_detail_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_car_detail_buttonActionPerformed
-        JTextField id = new JTextField();
-        // create jcomponent for confirm dialog
-        JComponent[] enter_car = new JComponent[]{
-            new JLabel("Enter Car ID", SwingConstants.CENTER),
-            id
-        };
-        int result = JOptionPane.showConfirmDialog(null, enter_car, "Car Detail", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        
-        // find the car
-        connectDB();
-        String carID = id.getText();
-        String sql = "SELECT ID FROM CAR_Car WHERE ID = '"+ carID +"'";
-        ArrayList<HashMap> cars = db.queryRows(sql);
-        // if press OK
-        if(result == JOptionPane.OK_OPTION){
-            // if have a car, show car detail
-            if(cars.size()>0){
-                new CarDetail(carID);
-            } else { // else show error message
-                JOptionPane.showMessageDialog(null, "Cannot found car.", "Error", JOptionPane.PLAIN_MESSAGE);
-            }
-        }
-        
-        System.out.println(db.disconnect()); 
+        controller.runCarDetailWindow();
     }//GEN-LAST:event_car_detail_buttonActionPerformed
 
     private void add_carActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_carActionPerformed
-        // create AddCar panel to show in confirm dialog
-        CarAdd add_car_window = new CarAdd();
-        int n = JOptionPane.showConfirmDialog(null, add_car_window, "Add New Car", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        
-        // if press OK, add the car
-        if( n == JOptionPane.OK_OPTION ){
-            connectDB();
-            // check not have empty fields
-            if(!(add_car_window.getID().equals("") ||
-                add_car_window.getBrand().equals("") ||
-                add_car_window.getSeries().equals("") ||
-                add_car_window.getYear().equals("") ||
-                add_car_window.getColor().equals("") ||
-                add_car_window.getPrice().equals("") ||
-                add_car_window.getSeat().equals("") ||
-                add_car_window.getLicense().equals("")) ){
-                
-                // create sql query string
-                String sql = "INSERT INTO CAR_Car VALUES ("
-                        + "'"+ add_car_window.getID() + "',"
-                        + "'"+ add_car_window.getBrand() + "',"
-                        + "'"+ add_car_window.getSeries() + "',"
-                        + "'"+ add_car_window.getYear() + "',"
-                        + "'"+ add_car_window.getColor() + "',"
-                        + Integer.parseInt(add_car_window.getPrice()) + ","
-                        + Integer.parseInt(add_car_window.getSeat()) + ","
-                        + "0,"
-                        + "'"+ add_car_window.getLicense() + "',"
-                        + "'Available')";
-                // execute query
-                boolean updateSuccess = db.executeQuery(sql);
-                System.out.println(updateSuccess);
-                System.out.println(db.disconnect());
-                
-            }
-            else {
-                JOptionPane.showMessageDialog(null, "Invalid or missed input. Cannot add a car.");
-            }
-        }
+        controller.runCarAddingWindow();
     }//GEN-LAST:event_add_carActionPerformed
 
     private void available_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_available_radioActionPerformed
@@ -362,30 +263,18 @@ public class CarManagement extends javax.swing.JFrame {
     }//GEN-LAST:event_reserved_radioActionPerformed
 
     public void refresh(){
-        connectDB();
-        String sql = "SELECT * FROM CAR_Car";
-        car_list = db.queryRows(sql);
-        showContent(car_list);
-        System.out.println(db.disconnect());
+        showContent(controller.getAllCarList());
+        System.out.println("searched car activated.");
     }
     
-    public void showContent(ArrayList<HashMap> cars){
+    public void showContent(ArrayList<HashMap> car_list){
         model = new DefaultTableModel(col,0);
-        for(HashMap car : cars){
-            String car_id = (String) car.get("ID");
-            String brand = (String) car.get("brand");
-            String series = (String) car.get("series");
-            String year = (String) car.get("year");
-            String color = (String) car.get("color");;
-            String license_page = (String) car.get("LicensePage");;
-            String price = (String) car.get("price_day");;
-            String seat = (String) car.get("seat");;
-            String mile = (String) car.get("mileage");
-            String status = (String) car.get("Status");
-            Object[] data = {car_id, brand, series, year, color, license_page, price, seat, mile, status};
-            model.addRow(data);
+        ArrayList<Object[]> table_contents = controller.getTableContent(car_list);
+        for(Object[] row_content : table_contents){
+            model.addRow(row_content);
         }
         carlist_table.setModel(model);
+        System.out.println("make table success.");
     }
     
     /**
@@ -440,4 +329,17 @@ public class CarManagement extends javax.swing.JFrame {
     private javax.swing.JButton search_button;
     private javax.swing.JLabel search_label;
     // End of variables declaration//GEN-END:variables
+
+    public String getSearchedText(){
+        return search.getText();
+    }
+    
+    public boolean isReservedCar(){
+        return reserved_radio.isSelected();
+    }
+    
+    public boolean isAvailableCar(){
+        return available_radio.isSelected();
+    }
+    
 }

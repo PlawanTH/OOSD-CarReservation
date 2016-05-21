@@ -5,6 +5,7 @@
  */
 package controller;
 
+import controller.CarManagement.CarManagementController;
 import csc319_carreservation.MainApp;
 
 
@@ -30,16 +31,27 @@ public class MainApplicationController {
         
         new ReservationController();
         System.out.println("Run Reservation Management System.");
-        System.out.println("Main Dispose.");
         mainapp = null;
     }  
-}
     
     
 
     // run car management window controller method (and dispose)
-    
+    public void runCarManagementWindow(){
+        mainapp.dispose();
+        mainapp = null;
+        
+        new CarManagementController();
+        System.out.println("Run Car Management System.");
+    }
+
     // run customer management window controller method (and dispose)
     
     // log out -- run login window controller (and dispose)
+    public void logout(){
+        mainapp.dispose();
+        mainapp = null;
+        new NewLoginController();
+    }
     
+}

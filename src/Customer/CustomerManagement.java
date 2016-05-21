@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Customer;
-import Car.CarManagement;
+import View.CarManagement;
 import edu.sit.cs.db.CSDbDelegate;
 import java.util.ArrayList;
 import java.util.HashMap;
