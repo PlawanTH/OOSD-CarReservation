@@ -131,7 +131,7 @@ public class Reservation {
         // if customers was found (row count > 0), assign value. Otherwise, disconnect DB and return null
         if( db.countRows(reservations) > 0 ){
             for(HashMap reservation : reservations){
-                car = new Car(Integer.parseInt((String)reservation.get("CarID")));
+                car = new CarFactory().findCar(Integer.parseInt((String)reservation.get("CarID")));
                 customer = new Customer(Integer.parseInt((String)reservation.get("CustomerID")));
                 
                 reservationID = (Integer.parseInt((String)reservation.get("ReservationID")));
@@ -159,7 +159,7 @@ public class Reservation {
         Reservation reservation = new Reservation();
         reservation.setReservationID(Integer.parseInt((String)h.get("ReservationID")));
         reservation.setCustomer(new Customer(Integer.parseInt((String)h.get("CustomerID"))));
-        reservation.setCar(new Car(Integer.parseInt((String)h.get("CarID"))));
+        reservation.setCar(new CarFactory().findCar(Integer.parseInt((String)h.get("CarID"))));
         
         reservation.setReserveDate((String)h.get("ReserveDate"));
         reservation.setReserveTime((String)h.get("ReserveTime"));

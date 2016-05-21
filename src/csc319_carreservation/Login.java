@@ -25,8 +25,8 @@ public class Login extends javax.swing.JFrame {
         
         setTitle("Car Reserving System");
         setLook();
-        //setLocationRelativeTo(null);
         initComponents();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
     

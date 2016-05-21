@@ -9,15 +9,12 @@ import controller.CarManagement.CarManagementController;
 import controller.reservation.ReservationController;
 import csc319_carreservation.MainApp;
 
-
-
-
 /**
  *
  * @author chalinyasutrat
  */
 public class MainApplicationController {
-     // Main Application Window
+    // Main Application Window
     MainApp mainapp;
     
     public MainApplicationController(){
@@ -33,10 +30,9 @@ public class MainApplicationController {
         new ReservationController();
         System.out.println("Run Reservation Management System.");
         mainapp = null;
-    }  
-    
-    
-
+        
+    }
+   
     // run car management window controller method (and dispose)
     public void runCarManagementWindow(){
         mainapp.dispose();
@@ -45,8 +41,6 @@ public class MainApplicationController {
         new CarManagementController();
         System.out.println("Run Car Management System.");
     }
-
-    // run customer management window controller method (and dispose)
     
     // log out -- run login window controller (and dispose)
     public void logout(){

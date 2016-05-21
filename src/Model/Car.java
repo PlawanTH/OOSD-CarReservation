@@ -31,8 +31,10 @@ public class Car {
     private String updateDate;
     private String updateTime;
     
+    private GearLevel gearLevel;
+    
     public Car(){
-        
+        gearLevel = new GearAuto();
     }
     
     public Car(int carID){
@@ -159,6 +161,14 @@ public class Car {
         this.updateTime = updateTime;
     }
     
+    public GearLevel getGearLevel(){
+        return gearLevel;
+    }
+    
+    public void setGearLevel(GearLevel level){
+        gearLevel = level;
+    }
+    
     public Car findCar(int id){
         // connect to DB
         DBConnector db = new DBConnector();
@@ -190,6 +200,12 @@ public class Car {
                 dateAdded = ((String)car.get("DateAdded"));
                 updateDate = ((String)car.get("UpdateDate"));
                 updateTime = ((String)car.get("UpdateTime"));
+                
+                if(gearType.equals("Manual")){
+                    gearLevel = new GearManual();
+                } else {
+                    gearLevel = new GearAuto();
+                }
             }
         } else {
             System.out.println(db.disconnect());
@@ -201,7 +217,7 @@ public class Car {
     }
     
     public Car makeCar(HashMap h){
-        /* ---------------------- fixed assigning value --------------------------- */
+        // ---------------------- fixed assigning value --------------------------- //
         Car car = new Car();
         car.setBrand(h.get("Brand").toString());
         car.setCarID(Integer.parseInt(h.get("CarID").toString()));
@@ -218,6 +234,12 @@ public class Car {
         car.setUpdateDate(h.get("UpdateDate").toString());
         car.setUpdateTime(h.get("UpdateTime").toString());
         car.setYear(h.get("Year").toString());
+        
+        if(car.getGearType().equals("Manual")){
+            car.setGearLevel(new GearManual());
+        } else {
+            car.setGearLevel(new GearAuto());
+        }
     
         return car;
     }

@@ -25,9 +25,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="add_servicer" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="logout" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -65,10 +63,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="car_button" min="-2" pref="51" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="add_servicer" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="logout" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="logout" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -96,14 +91,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="car_buttonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="add_servicer">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Add Service Provider"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="add_servicerActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="logout">

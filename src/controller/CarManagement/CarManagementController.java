@@ -6,6 +6,7 @@
 package controller.CarManagement;
 
 import Model.Car;
+import Model.CarFactory;
 import Model.DBConnector;
 import View.CarManagement;
 import controller.MainApplicationController;
@@ -49,6 +50,7 @@ public class CarManagementController {
                 + " WHERE (Brand LIKE '%"+carManagementWindow.getSearchedText()+"%'"
                 + " OR Series LIKE '%"+carManagementWindow.getSearchedText()+"%'"
                 + " OR LicensePlate LIKE '%"+carManagementWindow.getSearchedText()+"%'"
+                + " OR Year LIKE '%"+carManagementWindow.getSearchedText()+"%'"
                 + " OR CarType LIKE '%"+carManagementWindow.getSearchedText()+"%')";
         
         if(carManagementWindow.isAvailableCar()){
@@ -60,7 +62,7 @@ public class CarManagementController {
         ArrayList<HashMap> searched_item;
         searched_item = db.queryRows(sql);
         for(HashMap item : searched_item){
-            car_list.add(new Car().makeCar(item));
+            car_list.add(new CarFactory().makeCar(item));
         }
         
         System.out.println(db.disconnect());
@@ -82,7 +84,7 @@ public class CarManagementController {
         ArrayList<HashMap> searched_item;
         searched_item = db.queryRows(sql);
         for(HashMap item : searched_item){
-            car_list.add(new Car().makeCar(item));
+            car_list.add(new CarFactory().makeCar(item));
         }
         
         System.out.println(db.disconnect());
@@ -145,7 +147,7 @@ public class CarManagementController {
                 // parse String to int
                 try {
                     Integer.parseInt(id_txt);
-                    car = new Car().findCar(Integer.parseInt(id_txt));
+                    car = new CarFactory().findCar(Integer.parseInt(id_txt));
                 } catch(Exception e) { 
                     car = null;
                 }

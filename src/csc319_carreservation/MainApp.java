@@ -36,6 +36,8 @@ public class MainApp extends javax.swing.JFrame {
         setTitle("Car Reserving System");
         setLook();
         initComponents();
+        
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
@@ -51,7 +53,6 @@ public class MainApp extends javax.swing.JFrame {
         label_header = new javax.swing.JLabel();
         btn_reservation_system = new javax.swing.JButton();
         car_button = new javax.swing.JButton();
-        add_servicer = new javax.swing.JButton();
         logout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -74,13 +75,6 @@ public class MainApp extends javax.swing.JFrame {
             }
         });
 
-        add_servicer.setText("Add Service Provider");
-        add_servicer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                add_servicerActionPerformed(evt);
-            }
-        });
-
         logout.setText("Logout");
         logout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -95,9 +89,7 @@ public class MainApp extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(add_servicer)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(logout))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,9 +116,7 @@ public class MainApp extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(car_button, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(add_servicer)
-                    .addComponent(logout))
+                .addComponent(logout)
                 .addContainerGap())
         );
 
@@ -146,33 +136,6 @@ public class MainApp extends javax.swing.JFrame {
     private void car_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_car_buttonActionPerformed
         mainAppCtrl.runCarManagementWindow();
     }//GEN-LAST:event_car_buttonActionPerformed
-
-    private void add_servicerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_servicerActionPerformed
-        /*ClerkAddPanel addServicer = new ClerkAddPanel();
-        int value = JOptionPane.showConfirmDialog(null, addServicer, "Add Servicer", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if(value == JOptionPane.OK_OPTION){
-            if( !(addServicer.getEmail().equals("") ||
-                    addServicer.getPhoneNumber().equals("") ||
-                    addServicer.getName().equals("") ||
-                    addServicer.getLastname().equals("") ||
-                    addServicer.getUsername().equals("") ||
-                    addServicer.getPassword().equals("")) ){
-                connectDB();
-                String sql_insert = "INSERT INTO CAR_Officer VALUES('"
-                        + addServicer.getUsername() + "','"
-                        + addServicer.getPassword() + "','"
-                        + addServicer.getName() + "','"
-                        + addServicer.getLastname() + "','"
-                        + addServicer.getEmail() + "','"
-                        + addServicer.getPhoneNumber()
-                        + "')";
-                System.out.println(db.executeQuery(sql_insert));
-                System.out.println(db.disconnect());
-            } else {
-                JOptionPane.showMessageDialog(null, "Invalid value!", "Error", JOptionPane.PLAIN_MESSAGE);
-            }
-        }*/
-    }//GEN-LAST:event_add_servicerActionPerformed
 
     public void setLook(){
         try {
@@ -194,7 +157,6 @@ public class MainApp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton add_servicer;
     private javax.swing.JButton btn_reservation_system;
     private javax.swing.JButton car_button;
     private javax.swing.JLabel label_header;
