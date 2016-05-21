@@ -38,7 +38,6 @@
                           <EmptySpace min="17" pref="17" max="17" attributes="0"/>
                           <Component id="txt_username" min="-2" pref="119" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="label1" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="label_header" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="btn_login" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -52,9 +51,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
               <Component id="label_header" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-              <Component id="label1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="label_username" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txt_username" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -81,11 +78,6 @@
           <Color id="Default Cursor"/>
         </Property>
         <Property name="horizontalTextPosition" type="int" value="0"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="label1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="For Service Provider"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="label_username">

@@ -52,7 +52,6 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         label_header = new javax.swing.JLabel();
-        label1 = new javax.swing.JLabel();
         label_username = new javax.swing.JLabel();
         label_password = new javax.swing.JLabel();
         txt_username = new javax.swing.JTextField();
@@ -67,8 +66,6 @@ public class Login extends javax.swing.JFrame {
         label_header.setAutoscrolls(true);
         label_header.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         label_header.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        label1.setText("For Service Provider");
 
         label_username.setText("Username :");
 
@@ -98,7 +95,6 @@ public class Login extends javax.swing.JFrame {
                             .addComponent(label_username)
                             .addGap(17, 17, 17)
                             .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(label1)
                         .addComponent(label_header)
                         .addComponent(btn_login)))
                 .addGap(109, 109, 109))
@@ -108,9 +104,7 @@ public class Login extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addComponent(label_header)
-                .addGap(18, 18, 18)
-                .addComponent(label1)
-                .addGap(30, 30, 30)
+                .addGap(62, 62, 62)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(label_username)
                     .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -128,9 +122,9 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
-        
+
         loginCtrl.verifyLogin(txt_username.getText(), txt_password.getText());
-        
+
     }//GEN-LAST:event_btn_loginActionPerformed
 
     public void setLook(){
@@ -154,7 +148,6 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_login;
-    private javax.swing.JLabel label1;
     private javax.swing.JLabel label_header;
     private javax.swing.JLabel label_password;
     private javax.swing.JLabel label_username;
