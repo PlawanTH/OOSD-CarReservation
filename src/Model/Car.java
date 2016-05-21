@@ -171,10 +171,10 @@ public class Car {
         ArrayList<HashMap> cars = db.queryRows(sql);
         
         // if users was found (row count > 0), assign value. Otherwise, disconnect DB and return null
-        if( cars.size() > 0 ){
+        if( db.countRows(cars) > 0 ){
             for(HashMap car : cars){
                 carID = (Integer.parseInt((String)car.get("CarID")));
-                licensePlate = ((String)car.get("LicensePage"));
+                licensePlate = ((String)car.get("LicensePlate"));
                 brand = ((String)car.get("Brand"));
                 series = ((String)car.get("Series"));
                 year = ((String)car.get("Year"));
@@ -182,6 +182,7 @@ public class Car {
                 color = ((String)car.get("Color"));
                 passenger = (Integer.parseInt((String)car.get("Passenger")));
                 carType = ((String)car.get("CarType"));
+                gearType = ((String)car.get("GearType"));
                 
                 pricePerDay = (Double.parseDouble((String)car.get("PricePerDay")));
                 status = ((String)car.get("Status"));
@@ -199,12 +200,26 @@ public class Car {
         return this;
     }
     
+    public Car makeCar(HashMap h){
+        /* ---------------------- fixed assigning value --------------------------- */
+        Car car = new Car();
+        car.setBrand(h.get("Brand").toString());
+        car.setCarID(Integer.parseInt(h.get("CarID").toString()));
+        car.setCarType(h.get("CarType").toString());
+        car.setColor(h.get("Color").toString());
+        car.setDateAdded(h.get("DateAdded").toString());
+        car.setEngineSize(Integer.parseInt(h.get("EngineSize").toString()));
+        car.setGearType(h.get("GearType").toString());
+        car.setLicensePlate(h.get("LicensePlate").toString());
+        car.setPassenger(Integer.parseInt(h.get("Passenger").toString()));
+        car.setPricePerDay(Double.parseDouble(h.get("PricePerDay").toString()));
+        car.setSeries(h.get("Series").toString());
+        car.setStatus(h.get("Status").toString());
+        car.setUpdateDate(h.get("UpdateDate").toString());
+        car.setUpdateTime(h.get("UpdateTime").toString());
+        car.setYear(h.get("Year").toString());
     
-    
-    
-    
-    
-    
-    
+        return car;
+    }
     
 }

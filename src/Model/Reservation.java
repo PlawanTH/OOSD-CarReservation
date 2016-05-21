@@ -28,7 +28,6 @@ public class Reservation {
     
     private String status;
     
-    
     public Reservation(){
         
     }
@@ -124,7 +123,7 @@ public class Reservation {
         System.out.println(db.connect());
         
         // sql query string to find reservation data
-        String sql = "SELECT * FROM CAR_Reserve WHERE ReservationID = " + id;
+        String sql = "SELECT * FROM oosd_g3_car_reservation WHERE ReservationID = " + id;
         
         // put all reservations that was found in DB to ArrayList in HashMap form
         ArrayList<HashMap> reservations = db.queryRows(sql);

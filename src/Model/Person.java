@@ -14,7 +14,7 @@ class Person {
     private String citizenID;
     private String firstname;
     private String lastname;
-    private String dateOfBirth;
+    private String birthDate;
     private String address;
     private String subdistrict;
     private String district;
@@ -48,12 +48,12 @@ class Person {
         this.lastname = lastname;
     }
 
-    public String getDateOfBirth() {
-        return dateOfBirth;
+    public String getBirthDate() {
+        return birthDate;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getAddress() {
@@ -129,7 +129,7 @@ class Person {
         citizenID = ((String)dataSet.get("CitizenID"));
         firstname = ((String)dataSet.get("Firstname"));
         lastname = ((String)dataSet.get("Lastname"));
-        dateOfBirth = ((String)dataSet.get("DateOfBirth"));
+        birthDate = ((String)dataSet.get("BirthDate"));
         address = ((String)dataSet.get("Address"));
         subdistrict = ((String)dataSet.get("Subdistrict"));
         district = ((String)dataSet.get("District"));

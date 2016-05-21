@@ -8,10 +8,16 @@ package controller.reservation;
 import CarReserve.CarReserveManagement;
 import Model.DBConnector;
 import Model.Reservation;
+import View.ReservationManagement;
 import controller.MainApplicationController;
 import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -20,36 +26,83 @@ import java.util.HashMap;
 public class ReservationController {
     
      // view for reservation window
-    CarReserveManagement reserveWindow;
+    ReservationManagement reserveWindow;
     //MainApplicationController mainAppController;
     // model for reservation list : ArrayList<Reservation>
     ArrayList<Reservation> reservation_list;
     
+    // relation window
+    ReservationAddingController reservationAddingController = null;
+    ReservationDetailController reservationDetailController = null;
+    
+    
     public ReservationController(){
         // run reservation window
-        reserveWindow = new CarReserveManagement(this);
-        reserveWindow.addWindowListener(new WindowAdapter(){
-            public void windowClosing(){
-                new MainApplicationController();
-            }
-        });
+        reserveWindow = new ReservationManagement(this);
+    }
+    
+    public ReservationManagement getReservationManagementWindow(){
+        return reserveWindow;
     }
     
     // add (run add reservation window controller) >> carry
     public void runReservationAddingWindow(){
-        new ReservationAddingController();
+        if(reservationAddingController == null){
+            reservationAddingController = new ReservationAddingController(this);
+        }
     }
+    
+    public void resetReservationAddingWindow(){
+        reservationAddingController = null;
+    }
+    
+    public void resetReservationDetailWindow(){
+        reservationDetailController = null;
+    }
+    
     // detail (run reserve detail window controller) >> edit/update + delete :: @param RID by INPUT DIALOG
+    public void runReservationDetailWindow(){
+        
+        if(reservationDetailController == null){
+            JTextField txtID = new JTextField();
+            // create component with JTextField:id
+            JComponent[] input = new JComponent[]{
+                new JLabel("Enter Reserve ID", SwingConstants.CENTER),
+                txtID
+            };
+
+            int n = JOptionPane.showConfirmDialog(null, input, "Update Reservation", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            String id_txt = txtID.getText();
+
+            // if press OK
+            if(n==JOptionPane.OK_OPTION){
+                Reservation reservation = null;
+                // parse String to int
+                try {
+                    Integer.parseInt(id_txt);
+                    reservation = new Reservation().findReservation(Integer.parseInt(id_txt));
+                } catch(Exception e) { 
+                    reservation = null;
+                }
+                
+                if( reservation != null ){
+                    // open detail
+                    reservationDetailController = new ReservationDetailController(this, reservation);
+                } else { // show alert if it is invalid ID
+                    JOptionPane.showMessageDialog(null, new JComponent[]{new JLabel("Invalid Value or No Reserving ID.", SwingConstants.CENTER)},"Error Alert!" , JOptionPane.PLAIN_MESSAGE);
+                }
+            }
+        }
+    }
     
     // search : ArrayList<Reservation>
     public ArrayList<Reservation> getSearchedReservationList(){
-        //ArrayList<HashMap> search_reserve = new ArrayList<HashMap>();
         reservation_list = new ArrayList<Reservation>();
         
         DBConnector db = new DBConnector();
         System.out.println(db.connect());
         
-        //String search_sql = "SELECT * FROM CAR_Reserve";
         String search_sql = "SELECT * FROM oosd_g3_car_reservation, oosd_g3_car_customer"
                 + " WHERE oosd_g3_car_reservation.CustomerID = oosd_g3_car_customer.CustomerID";
         search_sql += " AND (oosd_g3_car_reservation.CustomerID LIKE '%"+reserveWindow.getSearchedText()+"%'";
@@ -60,8 +113,6 @@ public class ReservationController {
             search_sql += " AND Status = '" + reserveWindow.isSelectedStatusCheckbox() + "'";
         }
         
-       
-        // ReserveID, CustomerID, CarID, PickUp_Date, Return_Date, Location, Mileage, Status
         ArrayList<HashMap> search_item;
         search_item = db.queryRows(search_sql);
         for(HashMap item : search_item){
@@ -87,9 +138,6 @@ public class ReservationController {
         items = db.queryRows(sql);
         for(HashMap item : items){
             Reservation reservation = new Reservation().makeReservation(item);
-            System.out.println(reservation.getReservationID());
-            System.out.println(reservation.getCustomer().getCustomerID());
-            System.out.println(reservation.getCar().getCarID());
             reservation_list.add(reservation);
         }
         
@@ -114,7 +162,7 @@ public class ReservationController {
             String pickup_date = reservation.getPickUpDate();
             String return_date = reservation.getReturnDate();
             String pickup_location = reservation.getPickUpLocation();
-            String return_location = reservation.getPickUpLocation();
+            String return_location = reservation.getReturnLocation();
             String status = reservation.getStatus();
             Object[] data = {reservation_id, customer_id, customer_firstname, customer_lastname, car_id, pickup_date, return_date, pickup_location, return_location, status};
             table_contents.add(data);

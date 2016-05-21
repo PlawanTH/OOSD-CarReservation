@@ -49,7 +49,7 @@ public class Customer extends Person {
         ArrayList<HashMap> users = db.queryRows(sql);
         
         // if customers was found (row count > 0), assign value. Otherwise, disconnect DB and return null
-        if( users.size() > 0 ){
+        if( db.countRows(users) > 0 ){
             for(HashMap user : users){
                 customerID = (Integer.parseInt((String)user.get("CustomerID")));
                 setPersonalData(user);
@@ -66,18 +66,13 @@ public class Customer extends Person {
         return this;
     }
     
-    /*public Reservation makeReservation(HashMap h){
-        Reservation reservation = new Reservation();
-        reservation.setReservationID(Integer.parseInt((String)h.get("ReserveID")));
-        System.out.println("HelloMake");
-        reservation.setCustomerID((String)h.get("CustomerID"));
-        reservation.setCarID((String)h.get("CarID"));
-        reservation.setLocation((String)h.get("Location"));
-        reservation.setMileage(Double.parseDouble((String)h.get("Mileage")));
-        reservation.setPickUpDate((String)h.get("PickUp_Date"));
-        reservation.setReturnDate((String)h.get("Return_Date"));
-        reservation.setStatus((String)h.get("Status"));
-        return reservation;
-    }*/
+    public Customer makeCustomer(HashMap h){
+        Customer customer = new Customer();
+        
+        customer.setPersonalData(h);
+        customer.setCustomerID(Integer.parseInt(h.get("CustomerID").toString()));
+        
+        return customer;
+    }
     
 }

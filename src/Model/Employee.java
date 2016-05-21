@@ -42,7 +42,7 @@ public class Employee extends Person {
         ArrayList<HashMap> users = db.queryRows(sql);
         
         // if users was found (row count > 0), assign value. Otherwise, disconnect DB and return null
-        if( users.size() > 0 ){
+        if( db.countRows(users) > 0 ){
             // assign value to employee
             for(HashMap user : users){
                 username = ((String)user.get("Username"));
@@ -73,7 +73,7 @@ public class Employee extends Person {
         ArrayList<HashMap> users = db.queryRows(sql);
         
         // if users was found (row count > 0), assign value. Otherwise, disconnect DB and return null
-        if( users.size() > 0 ){
+        if( db.countRows(users) > 0 ){
             // assign value to employee
             for(HashMap user : users){
                 username = ((String)user.get("Username"));
@@ -85,10 +85,6 @@ public class Employee extends Person {
         System.out.println(db.disconnect());
         
         return null;
-    }
-
-    public void setPersonalData(HashMap user) {
-        
     }
     
 }
