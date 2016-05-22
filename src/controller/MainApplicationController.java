@@ -42,6 +42,15 @@ public class MainApplicationController {
         System.out.println("Run Car Management System.");
     }
     
+    // run payment
+    public void runPayment(){
+        mainapp.dispose();
+        mainapp = null;
+        
+        new PaymentController();
+        System.out.println("Run Payment System.");
+    }
+    
     // log out -- run login window controller (and dispose)
     public void logout(){
         mainapp.dispose();

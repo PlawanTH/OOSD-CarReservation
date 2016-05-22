@@ -104,7 +104,7 @@ public class ReservationAddingController {
                         return false;
                     }
                 };
-                ArrayList<Object[]> table_content = new CarManagementController().getTableContent(getSearchedCar(searchText.getText()));
+                ArrayList<Object[]> table_content = getTableContent(getSearchedCar(searchText.getText()));
                 for(Object[] row_content : table_content){
                     model.addRow(row_content);
                 }

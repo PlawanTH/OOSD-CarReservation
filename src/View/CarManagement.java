@@ -115,6 +115,7 @@ public class CarManagement extends javax.swing.JFrame {
 
         search_label.setText("Search :");
 
+        label_header.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
         label_header.setText("Car List");
 
         search_button.setText("Search");

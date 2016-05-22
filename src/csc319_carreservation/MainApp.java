@@ -54,9 +54,11 @@ public class MainApp extends javax.swing.JFrame {
         btn_reservation_system = new javax.swing.JButton();
         car_button = new javax.swing.JButton();
         logout = new javax.swing.JButton();
+        payment_button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        label_header.setFont(new java.awt.Font("Century Gothic", 3, 28)); // NOI18N
         label_header.setText("Car Reservation System");
 
         btn_reservation_system.setText("Car Reserve Management");
@@ -82,6 +84,14 @@ public class MainApp extends javax.swing.JFrame {
             }
         });
 
+        payment_button.setText("Payment System");
+        payment_button.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        payment_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payment_buttonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -89,33 +99,37 @@ public class MainApp extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(logout))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(121, 121, 121)
+                                .addGap(115, 115, 115)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btn_reservation_system)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(25, 25, 25)
-                                        .addComponent(car_button))
-                                    .addComponent(btn_reservation_system)))
+                                        .addGap(21, 21, 21)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(car_button)
+                                            .addComponent(payment_button)))))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(141, 141, 141)
+                                .addGap(34, 34, 34)
                                 .addComponent(label_header)))
-                        .addGap(0, 112, Short.MAX_VALUE)))
+                        .addGap(0, 30, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(logout)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(30, 30, 30)
                 .addComponent(label_header)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
                 .addComponent(btn_reservation_system, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(car_button, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addGap(18, 18, 18)
+                .addComponent(payment_button, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(logout)
                 .addContainerGap())
         );
@@ -136,6 +150,10 @@ public class MainApp extends javax.swing.JFrame {
     private void car_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_car_buttonActionPerformed
         mainAppCtrl.runCarManagementWindow();
     }//GEN-LAST:event_car_buttonActionPerformed
+
+    private void payment_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payment_buttonActionPerformed
+        mainAppCtrl.runPayment();
+    }//GEN-LAST:event_payment_buttonActionPerformed
 
     public void setLook(){
         try {
@@ -161,5 +179,6 @@ public class MainApp extends javax.swing.JFrame {
     private javax.swing.JButton car_button;
     private javax.swing.JLabel label_header;
     private javax.swing.JButton logout;
+    private javax.swing.JButton payment_button;
     // End of variables declaration//GEN-END:variables
 }
